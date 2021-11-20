@@ -1,2 +1,2 @@
-# simple-webtrc
-Make a simple web video call with webRTC
+# RATNA02-server-JS
+controlling RATNA robot from a server using Node JS and Vite
