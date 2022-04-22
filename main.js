@@ -2,6 +2,17 @@ import './style.css';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import defineConfig from 'vite';
+// import react from '@vitejs/plugin-react';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  server: {
+    hmr: {
+      clientPort: 3000,
+    },
+  },
+})
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQb5TqSTwMLF_GaXnKaBzcf5grV2K4RCU",
@@ -43,7 +54,7 @@ const hangupButton = document.getElementById('hangupButton');
 
 // 1. Setup media sources
 
-localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+localStream = navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 remoteStream = new MediaStream();
 
 // Push tracks from local stream to peer connection
