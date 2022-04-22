@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="webrtc.js"></script>
+    <title>test Ratna WebRTC</title>
+    <style>
+        body {
+            text-align: center;
+            color: #2c3e50;
+            /* margin: 80px 10px; */
+            background-color: black;
+        }
+
+        video {
+            /* margin: 10px; */
+            background: #2c3e50;
+        }
+
+        .remote {
+            width: 96vw;
+            height: 96vh;
+            z-index: 1;
+        }
+
+        .local {
+            position: fixed;
+            top: 10px;
+            left: 30px;
+            width: 20vw;
+            height: auto;
+            z-index: 5;
+        }
+
+        /* .videos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } */
+    </style>
+</head>
+
+<body>
+    <!-- <h1>RATNA02 CONTROL SERVER</h1> -->
+    <div class="videos">
+        <span>
+            <video class="remote" id="remoteVideo" autoplay="true"></video>
+        </span>
+        <span>
+            <video class="local" id="localVideo" autoplay="true" muted="muted"></video>
+        </span>
+    </div>
+    <!-- <br /> -->
+    <!-- <input type="button" id="start" onclick="start(true)" value="Start Video"></input> -->
+
+    <script type="text/javascript">
+        pageReady();
+    </script>
+</body>
+
+</html>
