@@ -2,15 +2,19 @@
   "dependencies": {
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "ws": "^8.5.0"
+    "ws": "^3.3.2"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "name": "ratna02-server",
   "version": "1.0.0",
   "description": "server API for RATNA02 robot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semaralawa/RATNA02-server-JS.git"
+  },
   "main": "server.js",
-  "author": "",
+  "author": "Santa Semaralawa",
   "license": "ISC"
 }
