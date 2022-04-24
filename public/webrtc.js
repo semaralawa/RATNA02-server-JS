@@ -8,21 +8,26 @@ var serverConnection;
 var movement_result;
 
 var peerConnectionConfig = {
-  'iceServers': [
-    { 'urls': 'stun:stun.stunprotocol.org:3478' },
-    { 'urls': 'stun:stun.l.google.com:19302' },
-    { 'urls': 'stun:relay.backups.cz' },
+  iceServers: [
     {
-      url: 'turn:relay.backups.cz',
-      credential: 'webrtc',
-      username: 'webrtc'
+      urls: "stun:openrelay.metered.ca:80",
     },
     {
-      url: 'turn:relay.backups.cz?transport=tcp',
-      credential: 'webrtc',
-      username: 'webrtc'
-    }
-  ]
+      urls: "turn:openrelay.metered.ca:80",
+      username: "openrelayproject",
+      credential: "openrelayproject",
+    },
+    {
+      urls: "turn:openrelay.metered.ca:443",
+      username: "openrelayproject",
+      credential: "openrelayproject",
+    },
+    {
+      urls: "turn:openrelay.metered.ca:443?transport=tcp",
+      username: "openrelayproject",
+      credential: "openrelayproject",
+    },
+  ],
 };
 
 function pageReady() {
