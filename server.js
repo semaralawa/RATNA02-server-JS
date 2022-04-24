@@ -7,6 +7,9 @@ const session = require('express-session');
 const path = require('path');
 const WebSocketServer = WebSocket.Server;
 
+//port to listen
+const HTTPS_PORT = 443;
+
 //TLS
 const serverConfig = {
     key: fs.readFileSync('key.pem'),
@@ -70,7 +73,7 @@ app.get('/robot', function (req, res) {
 });
 
 const httpsServer = https.createServer(serverConfig, app);
-httpsServer.listen(8443, '0.0.0.0');
+httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 
 // ----------------------------------------------------------------------------------------
 
@@ -111,3 +114,5 @@ wss.broadcast = function (data) {
         }
     });
 };
+
+console.log("server has started");

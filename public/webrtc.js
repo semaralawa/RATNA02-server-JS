@@ -35,7 +35,7 @@ function pageReady() {
 
   //use this if you want to add some domain
   if (address.includes('localhost')) {
-    serverConnection = new WebSocket('wss://' + address + ':8443');
+    serverConnection = new WebSocket('wss://' + address + ':443');
   }
   else {
     serverConnection = new WebSocket('wss://' + window.location.hostname);
