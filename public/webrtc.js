@@ -65,7 +65,7 @@ function pageReady() {
 }
 
 function button_click(element) {
-  serverConnection.send(JSON.stringify({ 'movement': element.id }));
+  serverConnection.send(JSON.stringify({ 'movement': element.id, 'time': Date.now() }));
   movement_result.innerHTML = element.id;
 }
 
@@ -94,6 +94,11 @@ function gotMessageFromServer(message) {
 
   // Ignore messages from ourself
   if (signal.uuid == uuid) return;
+
+  if (signal.movement) {
+    var delay = Date.now() - signal.time;
+    console.log('delay: %d', delay);
+  }
 
   if (signal.sdp) {
     peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function () {
