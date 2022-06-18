@@ -96,7 +96,11 @@ function gotMessageFromServer(message) {
   if (signal.uuid == uuid) return;
 
   if (signal.movement) {
+    console.log(Date.now());
     var delay = Date.now() - signal.time;
+    if (delay < 0) {
+      delay = delay + 905;
+    }
     console.log('delay: %d', delay);
   }
 
