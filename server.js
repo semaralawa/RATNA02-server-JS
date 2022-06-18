@@ -5,10 +5,15 @@ const WebSocket = require('ws');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+
+//init websocket
 const WebSocketServer = WebSocket.Server;
 
 //port to listen
 const HTTPS_PORT = 443;
+
+// set password
+const WEB_PASSWORD = 'ratna02';
 
 //TLS
 const serverConfig = {
@@ -23,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 //express session
 app.use(
     session({
-        secret: 'my_secret_key',
+        secret: 'secret',
         resave: false,
         saveUninitialized: false,
     })
@@ -42,7 +47,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     const pass = req.body.password;
     // console.log(pass);
-    if (pass === 'aaa') {
+    if (pass === WEB_PASSWORD) {
         req.session.isLoggedIn = true;
         res.redirect('/home');
     }
@@ -61,7 +66,7 @@ app.get('/home', function (req, res) {
     }
 });
 
-app.post('/home', function (req, res) {
+app.post('/logout', function (req, res) {
     req.session.destroy(error => {
         res.redirect('/');
     });
@@ -75,30 +80,14 @@ app.get('/robot', function (req, res) {
 const httpsServer = https.createServer(serverConfig, app);
 httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 
-// ----------------------------------------------------------------------------------------
-
 // Create a server for handling websocket calls
 const wss = new WebSocketServer({ server: httpsServer });
-
-// wss.on("upgrade", (request, socket, head) => {
-//     wss.handleUpgrade(request, socket, head, (websocket) => {
-//         wss.emit("connection", websocket, request);
-//     });
-// });
 
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
         // Broadcast any received message to all clients
         console.log('received: %s', message);
         wss.broadcast(JSON.parse(message));
-        if (message.includes("movement")) {
-            fs.writeFile("move_data.txt", message, function (err) {
-                console.log("movement data received");
-                if (err) {
-                    console.log(err);
-                }
-            });
-        }
     });
     ws.on('error', function (exc) {
         console.log("ignoring exception: " + exc);
@@ -106,9 +95,7 @@ wss.on('connection', function (ws) {
 });
 
 wss.broadcast = function (data) {
-    // console.log(data);
     this.clients.forEach(function (client) {
-        // console.log(client);
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(data));
         }
