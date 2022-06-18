@@ -2,10 +2,12 @@
   "dependencies": {
     "express": "^4.17.3",
     "express-session": "^1.17.2",
+    "nodemon": "^2.0.16",
     "ws": "^3.3.2"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "nodemon server.js"
   },
   "name": "ratna02-server",
   "version": "1.0.0",
