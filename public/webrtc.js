@@ -76,15 +76,29 @@ function getUserMediaSuccess(stream) {
   remoteStream = new MediaStream();
 }
 
-function start(isCaller) {
+function start(isControl) {
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
   peerConnection.onicecandidate = gotIceCandidate;
   peerConnection.ontrack = gotRemoteStream;
   peerConnection.addStream(localStream);
 
-  if (isCaller) {
+  if (isControl) {
     peerConnection.createOffer().then(createdDescription).catch(errorHandler);
   }
+}
+
+function gotIceCandidate(event) {
+  if (event.candidate != null) {
+    serverConnection.send(JSON.stringify({ 'ice': event.candidate, 'uuid': uuid }));
+  }
+}
+
+function gotRemoteStream(event) {
+  console.log('got remote stream');
+  event.streams[0].getTracks().forEach((track) => {
+    remoteStream.addTrack(track);
+  });
+  remoteVideo.srcObject = remoteStream;
 }
 
 function gotMessageFromServer(message) {
@@ -96,6 +110,9 @@ function gotMessageFromServer(message) {
   if (signal.uuid == uuid) return;
 
   if (signal.movement) {
+    // send movement to webpage
+    movement_result.innerHTML = signal.movement;
+    // check delay
     console.log(Date.now());
     var delay = Date.now() - signal.time;
     if (delay < 0) {
@@ -116,26 +133,12 @@ function gotMessageFromServer(message) {
   }
 }
 
-function gotIceCandidate(event) {
-  if (event.candidate != null) {
-    serverConnection.send(JSON.stringify({ 'ice': event.candidate, 'uuid': uuid }));
-  }
-}
-
 function createdDescription(description) {
   console.log('got description');
 
   peerConnection.setLocalDescription(description).then(function () {
     serverConnection.send(JSON.stringify({ 'sdp': peerConnection.localDescription, 'uuid': uuid }));
   }).catch(errorHandler);
-}
-
-function gotRemoteStream(event) {
-  console.log('got remote stream');
-  event.streams[0].getTracks().forEach((track) => {
-    remoteStream.addTrack(track);
-  });
-  remoteVideo.srcObject = remoteStream;
 }
 
 function errorHandler(error) {
