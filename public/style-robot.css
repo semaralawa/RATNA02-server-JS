@@ -1,0 +1,56 @@
+body {
+    font-family: "Lucida Sans";
+    text-align: center;
+    /* margin: 80px 10px; */
+    background-color: black;
+}
+
+video {
+    /* margin: 10px; */
+    background: #2c3e50;
+}
+
+.remote {
+    width: 96vw;
+    height: 96vh;
+    z-index: 1;
+}
+
+.local {
+    position: fixed;
+    top: 10px;
+    left: 30px;
+    width: 20vw;
+    height: auto;
+    z-index: 5;
+}
+
+h1 {
+    width: 500px;
+    height: 200px;
+    -webkit-text-stroke: 1px black;
+    position: fixed;
+    color: aliceblue;
+    margin: 10px auto;
+    left: 0;
+    right: 0;
+    z-index: 6;
+}
+
+#result {
+    width: 500px;
+    height: 200px;
+    -webkit-text-stroke: 1px black;
+    position: fixed;
+    color: aliceblue;
+    margin: 50px auto;
+    left: 0;
+    right: 0;
+    z-index: 6;
+}
+
+/* .videos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } */
