@@ -13,7 +13,7 @@ const WebSocketServer = WebSocket.Server;
 const HTTPS_PORT = 443;
 
 // set password
-const WEB_PASSWORD = 'ratna02';
+const WEB_PASSWORD = 'aaa';
 
 //TLS
 const serverConfig = {
@@ -37,7 +37,7 @@ app.use(
 //login page
 app.get('/', function (req, res) {
     if (req.session.isLoggedIn === true) {
-        res.redirect('/home');
+        res.redirect('/control');
     }
     else {
         res.sendFile(path.join(__dirname, 'public/login.html'));
@@ -49,17 +49,18 @@ app.post('/', function (req, res) {
     // console.log(pass);
     if (pass === WEB_PASSWORD) {
         req.session.isLoggedIn = true;
-        res.redirect('/home');
+        res.redirect('/control');
     }
     else {
+        console.log('wrong password')
         res.redirect('/');
     }
 });
 
 //user page for controlling the robot
-app.get('/home', function (req, res) {
+app.get('/control', function (req, res) {
     if (req.session.isLoggedIn === true) {
-        res.sendFile(path.join(__dirname, 'public/home.html'));
+        res.sendFile(path.join(__dirname, 'public/control.html'));
     }
     else {
         res.redirect('/');
@@ -84,14 +85,26 @@ httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 const wss = new WebSocketServer({ server: httpsServer });
 
 wss.on('connection', function (ws) {
+    console.log('new client connected');
+    var aaa = {};
+    aaa['movement'] = 'stop';
+    wss.broadcast(aaa);
+
     ws.on('message', function (message) {
         // Broadcast any received message to all clients
         console.log('received: %s', message);
         wss.broadcast(JSON.parse(message));
     });
     ws.on('error', function (exc) {
-        console.log("ignoring exception: " + exc);
+        console.log("error: " + exc);
     });
+
+    ws.onclose = function (event) {
+        console.log('client disconnected');
+        var aaa = {};
+        aaa['movement'] = 'stop';
+        wss.broadcast(aaa);
+    };
 });
 
 wss.broadcast = function (data) {
