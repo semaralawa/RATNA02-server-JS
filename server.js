@@ -85,11 +85,6 @@ httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 const wss = new WebSocketServer({ server: httpsServer });
 
 wss.on('connection', function (ws) {
-    console.log('new client connected');
-    var aaa = {};
-    aaa['movement'] = 'stop';
-    wss.broadcast(aaa);
-
     ws.on('message', function (message) {
         // Broadcast any received message to all clients
         console.log('received: %s', message);
@@ -105,6 +100,11 @@ wss.on('connection', function (ws) {
         aaa['movement'] = 'stop';
         wss.broadcast(aaa);
     };
+
+    console.log('new client connected');
+    var aaa = {};
+    aaa['movement'] = 'stop';
+    wss.broadcast(aaa);
 });
 
 wss.broadcast = function (data) {

@@ -76,13 +76,13 @@ function getUserMediaSuccess(stream) {
   remoteStream = new MediaStream();
 }
 
-function start(isControl) {
+function start(isCaller) {
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
   peerConnection.onicecandidate = gotIceCandidate;
   peerConnection.ontrack = gotRemoteStream;
   peerConnection.addStream(localStream);
 
-  if (isControl) {
+  if (isCaller) {
     peerConnection.createOffer().then(createdDescription).catch(errorHandler);
   }
 }
